@@ -1,104 +1,93 @@
-const allOrders = [
-  {
-    id: "1",
-    date: "2nd April, 2022",
-    client: "Adaeze",
-    ownerContact: "07082836846",
-    package: "Egusi",
-    receiver: "07069910818",
-    dropOff: "Abakpa",
-    status: "in-transit",
-  },
-  {
-    id: "2",
-    date: "3rd Dec, 2022",
-    client: "Hamsa",
-    ownerContact: "07082836847",
-    package: "Beef",
-    receiver: "07069910819",
-    dropOff: "Abakpa-nike",
-    status: "delayed",
-  },
-  {
-    id: "3",
-    date: "4th September, 2022",
-    client: "Gift",
-    ownerContact: "07082836848",
-    package: "Corned Beef",
-    receiver: "07069910810",
-    dropOff: "UNEC",
-    status: "delivered",
-  },
-];
-
+const Order = require("../models/orderModel");
 // GET ORDERS
-exports.getAllOrders = (req, res) => {
-  console.log(req.requestTime);
-
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestTime,
-    data: {
-      allOrders,
-    },
-  });
+exports.getAllOrders = async (req, res) => {
+  try {
+    const allOrders = await Order.find();
+    res.status(200).json({
+      status: "success",
+      requestedAt: req.requestTime,
+      data: {
+        allOrders,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err,
+    });
+  }
 };
 
 // CREATE ORDER
-exports.createOrder = (req, res) => {
-  const newId = +allOrders[allOrders.length - 1].id + 1;
-  const newOrder = Object.assign({ id: newId }, req.body);
-
-  allOrders.push(newOrder);
-
-  res.status(201).json({
-    status: "success",
-    requestedAt: req.requestTime,
-    data: {
-      newOrder,
-    },
-  });
+exports.createOrder = async (req, res) => {
+  try {
+    const newOrder = await Order.create(req.body);
+    res.status(201).json({
+      status: "success",
+      requestedAt: req.requestTime,
+      data: {
+        newOrder,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
 };
 
 // GET ORDER
-exports.getOrder = (req, res) => {
-  const id = req.params.id * 1;
-
-  const order = allOrders.find((el) => +el.id === +id);
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      order,
-    },
-  });
+exports.getOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    res.status(200).json({
+      status: "success",
+      data: {
+        order,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
 };
 
 // UPDATE ORDER
-exports.updateOrder = (req, res) => {
-  const order = allOrders.find((el) => +el.id === +req.params.id);
-
-  order.client = req.body.client;
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      order,
-    },
-  });
+exports.updateOrder = async (req, res) => {
+  try {
+    const order = await Order.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(201).json({
+      status: "success",
+      data: {
+        order,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
 };
 
 // DELETE ORDER
-exports.deleteOrder = (req, res) => {
-  const order = allOrders.find((el) => +el.id === +req.params.id);
-
-  const index = allOrders.indexOf(order);
-  allOrders.splice(index, 1);
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      allOrders,
-    },
-  });
+exports.deleteOrder = async (req, res) => {
+  try {
+    Order.findByIdAndDelete(req.params.id);
+    res.status(204).json({
+      status: "success",
+      data: null,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err,
+    });
+  }
 };
