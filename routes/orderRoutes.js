@@ -4,6 +4,13 @@ const orderController = require("../controllers/orderController");
 const router = express.Router();
 
 router
+  .route("/top-5-cheap")
+  .get(orderController.aliasOrders, orderController.getAllOrders);
+
+router.route("/order-stats").get(orderController.getOrderStats);
+router.route("/monthly-plan/:year").get(orderController.getMonthlyPlan);
+
+router
   .route("/")
   .get(orderController.getAllOrders)
   .post(orderController.createOrder);
