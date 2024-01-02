@@ -5,8 +5,8 @@ const tourSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      unique: [true, 'A tour name must be unique.'],
-      required: [true, 'A tour must have a name.'],
+      unique: [true, 'A tour name must be unique'],
+      required: [true, 'A tour must have a name'],
       maxLength: [40, 'Tour name must be less than or equal to 40 characters'],
       minLength: [10, 'Tour name must be more than or equal to 10 characters'],
       trim: true,
@@ -18,15 +18,15 @@ const tourSchema = mongoose.Schema(
     },
     duration: {
       type: Number,
-      required: [true, 'A tour must have a duration.'],
+      required: [true, 'A tour must have a duration'],
     },
     maxGroupSize: {
       type: Number,
-      required: [true, 'A tour must have a group size.'],
+      required: [true, 'A tour must have a group size'],
     },
     difficulty: {
       type: String,
-      required: [true, 'A tour must have a difficulty.'],
+      required: [true, 'A tour must have a difficulty'],
       enum: {
         values: ['easy', 'medium', 'difficult'],
         message: 'Difficulty is either: easy, medium or difficult',
@@ -44,7 +44,7 @@ const tourSchema = mongoose.Schema(
     },
     price: {
       type: Number,
-      required: [true, 'A tour must have a price.'],
+      required: [true, 'A tour must have a price'],
     },
     priceDiscount: {
       type: Number,
@@ -52,13 +52,13 @@ const tourSchema = mongoose.Schema(
         validator: function (val) {
           return val < this.price;
         },
-        message: 'Price discount should be less than price.',
+        message: 'Price discount should be less than price',
       },
     },
     summary: {
       type: String,
       trim: true, //gets rid of whitespace
-      required: [true, 'A tour must have a summary.'],
+      required: [true, 'A tour must have a summary'],
     },
     description: {
       type: String,
@@ -66,7 +66,7 @@ const tourSchema = mongoose.Schema(
     },
     imageCover: {
       type: String,
-      required: [true, 'A tour must have a cover image.'],
+      required: [true, 'A tour must have a cover image'],
     },
     images: [String],
     createdAt: {
