@@ -21,10 +21,12 @@
   },
   "homepage": "https://github.com/AdaezeIkemefuna/vidly-genre#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^5.5.2",
     "morgan": "^1.10.0",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "validator": "^13.11.0"
   }
 }
