@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const userSchema = mongoose.Schema({
   name: {
     type: String,
-    unique: [true, 'Name must be unique'],
     required: [true, 'User must have a name'],
     maxLength: [40, 'Name cannot exceed 40 characters'],
     trim: true,
@@ -20,6 +19,7 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
     required: [true, 'A password is required'],
+    select: false,
   },
   passwordConfirm: {
     type: String,
@@ -40,7 +40,12 @@ userSchema.pre('save', async function (next) {
   this.passwordConfirm = undefined;
   next();
 });
-
+userSchema.methods.correctPassword = function (
+  candidatePassword,
+  userPassword
+) {
+  return bcrypt.compare(candidatePassword, userPassword);
+};
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
